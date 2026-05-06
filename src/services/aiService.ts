@@ -23,13 +23,18 @@ export const categorizeEmail = async (email: { subject: string; body: string }):
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
-      contents: `Analyze this email. Subject: ${email.subject}. Body: ${email.body.substring(0, 500)}. 
+      contents: `Perform high-precision neural analysis on this email. 
+      Subject: ${email.subject}. 
+      Body: ${email.body.substring(0, 1000)}. 
+      
+      Critical Objective: Identify malicious intent, phishing patterns, or spam.
+      
       Return a JSON object with: 
-      - category (Spam, Important, Promotions, Social, or Updates)
-      - sentiment (positive, negative, or neutral)
-      - summary (max 30 words)
-      - tags (array of 2-3 keywords)
-      - isSpam (boolean)`,
+      - category: One of [Spam, Important, Promotions, Social, Updates]. Use 'Spam' if there are clickbait elements or suspicious requests.
+      - sentiment: [positive, negative, neutral]
+      - summary: Clear analysis of intent (max 25 words).
+      - tags: array of 2-3 technical descriptors.
+      - isSpam: true only if dangerous or junk.`,
       config: {
         responseMimeType: "application/json",
         responseSchema: {
